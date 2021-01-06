@@ -6,7 +6,7 @@
 /*   By: yait-el- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 16:40:33 by yait-el-          #+#    #+#             */
-/*   Updated: 2021/01/05 18:25:30 by yait-el-         ###   ########.fr       */
+/*   Updated: 2021/01/06 16:35:34 by yait-el-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,22 @@ int main(int argc, char *argv[])
             break;
         }
         printf("Client reply : %s\n",client_message);
-        if(strcmp(pMessage,client_message)==0)
+
+        /*if(strcmp(pMessage,client_message)==0)
         {
             strcpy(message,"Hi there !");
         }
         else
         {
             strcpy(message,"Invalid Message !");
-        }
+        }*/
         // Send some data
         if( send(sock, message, strlen(message), 0) < 0)
         {
             printf("Send failed");
             return 1;
         }
-        close(sock);
+
         sleep(1);
     }
     return 0;
