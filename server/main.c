@@ -6,7 +6,7 @@
 /*   By: yait-el- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 16:40:33 by yait-el-          #+#    #+#             */
-/*   Updated: 2021/01/06 16:35:34 by yait-el-         ###   ########.fr       */
+/*   Updated: 2021/01/06 18:26:50 by yait-el-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include<sys/socket.h>
 #include<arpa/inet.h>
 #include<unistd.h>
+#include<pthread.h>
 
 short SocketCreate(void)
 {
@@ -63,18 +64,20 @@ int main(int argc, char *argv[])
     //Listen
     listen(socket_desc, 3);
     //Accept and incoming connection
-    while(1)
+
+    while((sock = accept(socket_desc,(struct sockaddr *)&client,(socklen_t*)&clientLen)))
     {
+		printf("Connection accepted\n");
         printf("Waiting for incoming connections...\n");
         clientLen = sizeof(struct sockaddr_in);
         //accept connection from an incoming client
-        sock = accept(socket_desc,(struct sockaddr *)&client,(socklen_t*)&clientLen);
+        /*sock = accept(socket_desc,(struct sockaddr *)&client,(socklen_t*)&clientLen);
         if (sock < 0)
         {
             perror("accept failed");
             return 1;
         }
-        printf("Connection accepted\n");
+        printf("Connection accepted\n");*/
         memset(client_message, '\0', sizeof client_message);
         memset(message, '\0', sizeof message);
         //Receive a reply from the client
@@ -85,16 +88,16 @@ int main(int argc, char *argv[])
         }
         printf("Client reply : %s\n",client_message);
 
-        /*if(strcmp(pMessage,client_message)==0)
+        if(strcmp(pMessage,client_message)==0)
         {
             strcpy(message,"Hi there !");
         }
         else
         {
             strcpy(message,"Invalid Message !");
-        }*/
+        }
         // Send some data
-        if( send(sock, message, strlen(message), 0) < 0)
+        if( send(sock, pMessage, strlen(pMessage), 0) < 0)
         {
             printf("Send failed");
             return 1;
@@ -102,5 +105,10 @@ int main(int argc, char *argv[])
 
         sleep(1);
     }
+	if (sock < 0)
+	{
+    perror("accept failed");
+    return 1;
+	}
     return 0;
 }

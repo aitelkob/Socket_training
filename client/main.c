@@ -6,7 +6,7 @@
 /*   By: yait-el- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/05 16:40:33 by yait-el-          #+#    #+#             */
-/*   Updated: 2021/01/06 16:37:50 by yait-el-         ###   ########.fr       */
+/*   Updated: 2021/01/06 17:05:33 by yait-el-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,11 @@ int main(int argc, char *argv[])
 		//Send data to the server
 		SocketSend(hSocket, SendToServer, strlen(SendToServer));
 		//Received the data from the server
-		read_size = SocketReceive(hSocket, server_reply, 200);
+		if (recv(hSocket,server_reply,2000,0) < 0)
+		{
+			printf("recv Failed");
+		}
+		//read_size = SocketReceive(hSocket, server_reply, 200);
 		printf("Server Response : %s\n\n",server_reply);
 	}
 	close(hSocket);
